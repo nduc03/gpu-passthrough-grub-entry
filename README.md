@@ -79,7 +79,7 @@ In this example, copy the section starting with `menuentry 'Ubuntu'`
 3. Add VFIO Kernel Parameters
 	- Find `linux` command then add these parameters after `quiet splash`: 
 	
-		`modprobe.blacklist=nouveau,nvidia,nvidia_drm,nvidia_uvm,nvidia_modeset,nvidia_fb use_vfio=1`
+		`modprobe.blacklist=nouveau,nvidia,nvidia_drm,nvidia_uvm,nvidia_modeset,nvidia_fb use_vfio`
 	
 	- Example:
 
@@ -90,7 +90,7 @@ In this example, copy the section starting with `menuentry 'Ubuntu'`
 			```
 		- After adding parameters:
 			```
-			linux /boot/vmlinuz-6.14.0-15-generic root=UUID=e98e3d8d-a0b5-4d9a-80db-da976477c490 ro  quiet splash modprobe.blacklist=nouveau,nvidia,nvidia_drm,nvidia_uvm,nvidia_modeset,nvidia_fb use_vfio=1 crashkernel=2G-4G:320M,4G-32G:512M,32G-64G:1024M,64G-128G:2048M,128G-:4096M $vt_handoff
+			linux /boot/vmlinuz-6.14.0-15-generic root=UUID=e98e3d8d-a0b5-4d9a-80db-da976477c490 ro  quiet splash modprobe.blacklist=nouveau,nvidia,nvidia_drm,nvidia_uvm,nvidia_modeset,nvidia_fb use_vfio crashkernel=2G-4G:320M,4G-32G:512M,32G-64G:1024M,64G-128G:2048M,128G-:4096M $vt_handoff
 			```
 
 
@@ -137,7 +137,7 @@ menuentry 'Ubuntu (NVIDIA KVM passthrough)' --class ubuntu --class gnu-linux --c
 	```sh
 	#!/bin/bash
 
-	if grep -q "use_vfio=1" /proc/cmdline; then
+	if grep -q "use_vfio" /proc/cmdline; then
 		/usr/sbin/modprobe vfio
 		/usr/sbin/modprobe vfio_iommu_type1
 		/usr/sbin/modprobe vfio_pci
