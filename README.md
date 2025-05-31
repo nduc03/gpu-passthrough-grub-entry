@@ -1,6 +1,6 @@
 ## Create custom GRUB entry for NVIDIA GPU passthrough
 
-Tested and worked on Ubuntu 25
+Tested and worked on Ubuntu 25.04 with AMD system
 
 May create a script to automate these steps in the future.
 
@@ -92,7 +92,20 @@ In this example, copy the section starting with `menuentry 'Ubuntu'`
 			```
 			linux /boot/vmlinuz-6.14.0-15-generic root=UUID=e98e3d8d-a0b5-4d9a-80db-da976477c490 ro  quiet splash modprobe.blacklist=nouveau,nvidia,nvidia_drm,nvidia_uvm,nvidia_modeset,nvidia_fb use_vfio crashkernel=2G-4G:320M,4G-32G:512M,32G-64G:1024M,64G-128G:2048M,128G-:4096M $vt_handoff
 			```
+4. Bonus (Tested on ubuntu):
+- Remove kernel version of `vmlinuz-<kernel_version>` and `initrd.img-<kernel_version>` to `vmlinuz`, and `initrd.img` so the script don't have to modify for every kernel update.
+- Example:
 
+	Before
+	```sh
+	linux /boot/vmlinuz-6.14.0-15-generic root=UUID=e98e3d8d-a0b5-4d9a-80db-da976477c490 ro  quiet splash modprobe.blacklist=nouveau,nvidia,nvidia_drm,nvidia_uvm,nvidia_modeset,nvidia_fb use_vfio crashkernel=2G-4G:320M,4G-32G:512M,32G-64G:1024M,64G-128G:2048M,128G-:4096M $vt_handoff
+	initrd	/boot/initrd.img-6.14.0-15-generic
+	```
+	After:
+	```sh
+	linux /boot/vmlinuz root=UUID=e98e3d8d-a0b5-4d9a-80db-da976477c490 ro  quiet splash modprobe.blacklist=nouveau,nvidia,nvidia_drm,nvidia_uvm,nvidia_modeset,nvidia_fb use_vfio crashkernel=2G-4G:320M,4G-32G:512M,32G-64G:1024M,64G-128G:2048M,128G-:4096M $vt_handoff
+	initrd	/boot/initrd.img
+	```
 
 #### 40_custom file after edit:
 ```sh
@@ -115,13 +128,14 @@ menuentry 'Ubuntu (NVIDIA KVM passthrough)' --class ubuntu --class gnu-linux --c
 	else
 	  search --no-floppy --fs-uuid --set=root e98e3d8d-a0b5-4d9a-80db-da976477c490
 	fi
-	linux	/boot/vmlinuz-6.14.0-15-generic root=UUID=e98e3d8d-a0b5-4d9a-80db-da976477c490 ro  quiet splash modprobe.blacklist=nouveau,nvidia,nvidia_drm,nvidia_uvm,nvidia_modeset,nvidia_fb use_vfio=1 crashkernel=2G-4G:320M,4G-32G:512M,32G-64G:1024M,64G-128G:2048M,128G-:4096M $vt_handoff
-	initrd	/boot/initrd.img-6.14.0-15-generic
+	linux	/boot/vmlinuz root=UUID=e98e3d8d-a0b5-4d9a-80db-da976477c490 ro  quiet splash modprobe.blacklist=nouveau,nvidia,nvidia_drm,nvidia_uvm,nvidia_modeset,nvidia_fb use_vfio crashkernel=2G-4G:320M,4G-32G:512M,32G-64G:1024M,64G-128G:2048M,128G-:4096M $vt_handoff
+	initrd	/boot/initrd.img
 
 ```
 
 > ⚠️ **Note on Kernel Updates**  
-> If your system updates to a new kernel, repeat **Step 1 to Step 4**.  
+> Ignore this note if step 2 part 4. Bonus is done successfully.  
+> If your system updates to a new kernel, repeat **Step 1 to Step 3**.  
 > Kernel updates change the file names (`vmlinuz-<version>` and `initrd.img-<version>`), so your custom GRUB entry must be updated accordingly.
 
 
