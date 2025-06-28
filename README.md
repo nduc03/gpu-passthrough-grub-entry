@@ -134,7 +134,7 @@ menuentry 'Ubuntu (NVIDIA KVM passthrough)' --class ubuntu --class gnu-linux --c
 ```
 
 > ⚠️ **Note on Kernel Updates**  
-> Ignore this note if step 2 part 4. Bonus is done successfully.  
+> Ignore this note if "step 2 part 4. Bonus" is done successfully.  
 > If your system updates to a new kernel, repeat **Step 1 to Step 3**.  
 > Kernel updates change the file names (`vmlinuz-<version>` and `initrd.img-<version>`), so your custom GRUB entry must be updated accordingly.
 
